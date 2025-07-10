@@ -40,3 +40,16 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+logstash:
+  image: docker.elastic.co/logstash/logstash:8.14.0
+  container_name: logstash
+  depends_on:
+    - kafka
+  ports:
+    - "5044:5044"
+    - "9600:9600"
+  volumes:
+    - ./logstash:/usr/share/logstash/pipeline:ro
+  environment:
+    LS_JAVA_OPTS: "-Xmx1g -Xms1g"
